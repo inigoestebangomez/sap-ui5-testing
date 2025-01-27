@@ -13,11 +13,29 @@ sap.ui.define([
 		Given.iStartMyApp();
 
 		// Assertions
-		Then.onTheWorklistPage.theTableShouldHaveAllEntries().
+		Then.onTheWorklistPage.theTableShouldHavePagination().
 			and.theTitleShouldDisplayTheTotalAmountOfItems();
+	});
+
+	opaTest("Should be able to load more items", function (Given, When, Then) {
+		//Actions
+		When.onTheWorklistPage.iPressOnMoreData();
+
+		// Assertions
+		Then.onTheWorklistPage.theTableShouldHaveAllEntries();
 
 		// Cleanup
 		Then.iTeardownMyApp();
 	});
 
+	opaTest("Should be able to search for items", function (Given, When, Then) {
+		//Actions
+		When.onTheWorklistPage.iSearchFor("Bear");
+
+		// Assertions
+		Then.onTheWorklistPage.theTableHasOneItem();
+
+		// Cleanup
+		Then.iTeardownMyApp();
+	});
 });

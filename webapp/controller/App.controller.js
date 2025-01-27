@@ -7,7 +7,7 @@ sap.ui.define([
 	return BaseController.extend("sap.ui.demo.bulletinboard.controller.App", {
 
 		onInit: function () {
-			var oViewModel = new JSONModel({
+			let oViewModel = new JSONModel({
 					busy: true,
 					delay: 0
 				});

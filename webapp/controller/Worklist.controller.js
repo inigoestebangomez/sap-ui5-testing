@@ -2,11 +2,18 @@ sap.ui.define([
 	'./BaseController',
 	'sap/ui/model/json/JSONModel',
 	'../model/formatter',
-	'sap/m/library'
-], function(BaseController, JSONModel, formatter, mobileLibrary) {
+	'../model/FlaggedType',
+	'sap/m/library',
+	"sap/ui/model/Filter",
+	"sap/ui/model/FilterOperator"
+], function(BaseController, JSONModel, formatter, FlaggedType, mobileLibrary, Filter, FilterOperator) {
 	"use strict";
 
 	return BaseController.extend("sap.ui.demo.bulletinboard.controller.Worklist", {
+
+		types : {
+				flagged: new FlaggedType()
+		},
 
 		formatter: formatter,
 
@@ -19,7 +26,7 @@ sap.ui.define([
 		 * @public
 		 */
 		onInit: function () {
-			var oViewModel,
+			let oViewModel,
 				iOriginalBusyDelay,
 				oTable = this.byId("table");
 
@@ -62,7 +69,7 @@ sap.ui.define([
 		 */
 		onUpdateFinished: function (oEvent) {
 			// update the worklist's object counter after the table update
-			var sTitle,
+			let sTitle,
 				oTable = oEvent.getSource(),
 				iTotalItems = oEvent.getParameter("total");
 			// only update the counter if the length is final and
@@ -75,6 +82,21 @@ sap.ui.define([
 			this.getModel("worklistView").setProperty("/worklistTableTitle", sTitle);
 		},
 
+		onFilterPosts: function (oEvent) {
+
+			// build filter array
+			let aFilter = [];
+			let sQuery = oEvent.getParameter("query");
+			if (sQuery) {
+				aFilter.push(new Filter("Title", FilterOperator.Contains, sQuery));
+			}
+
+			// filter binding
+			let oTable = this.byId("table");
+			let oBinding = oTable.getBinding("items");
+			oBinding.filter(aFilter);
+		},
+
 		/* =========================================================== */
 		/* internal methods                                            */
 		/* =========================================================== */
@@ -85,7 +107,7 @@ sap.ui.define([
 		 * @private
 		 */
 		_updateListItemCount: function (iTotalItems) {
-			var sTitle;
+			let sTitle;
 			// only update the counter if the length is final
 			if (this._oTable.getBinding("items").isLengthFinal()) {
 				sTitle = this.getResourceBundle().getText("worklistTableTitleCount", [iTotalItems]);
@@ -98,7 +120,7 @@ sap.ui.define([
 		 * @public
 		 */
 		onShareEmailPress: function () {
-			var oViewModel = this.getModel("worklistView");
+			let oViewModel = this.getModel("worklistView");
 			mobileLibrary.URLHelper.triggerEmail(
 				null,
 				oViewModel.getProperty("/shareSendEmailSubject"),

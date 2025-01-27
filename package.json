@@ -8,6 +8,9 @@
     "start": "ui5 serve"
   },
   "devDependencies": {
-    "@ui5/cli": "^4"
+    "@ui5/cli": "^4",
+    "karma": "^6.4.4",
+    "karma-chrome-launcher": "^3.2.0",
+    "karma-ui5": "^4.1.0"
   }
 }
