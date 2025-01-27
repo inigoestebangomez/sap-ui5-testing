@@ -1,4 +1,6 @@
-sap.ui.define([], function () {
+sap.ui.define([
+	"sap/ui/demo/bulletinboard/model/DateFormatter"
+], function (DateFormatter) {
 	"use strict";
 
 	return {
@@ -16,18 +18,36 @@ sap.ui.define([], function () {
 
 			return parseFloat(sValue).toFixed(2);
 		},
+
+		/**
+		 * Defines a value state based on the price
+		 *
+		 * @public
+		 * @param {number} iPrice the price of a post
+		 * @returns {string} sValue the state for the price
+		 */
 		priceState: function (iPrice) {
 			if (iPrice < 50) {
 				return "Success";
-			} else if (iPrice >= 50 && iPrice < 250) {
-				return "None"
-			} else if (iPrice >= 250 && iPrice <2000) {
+			} else if (iPrice >= 50 && iPrice < 250 ) {
+				return "None";
+			} else if (iPrice >= 250 && iPrice < 2000 ) {
 				return "Warning";
 			} else {
-				return "Error"
+				return "Error";
 			}
-		}
+		},
 
+		/**
+		 * Creates a human readable date
+		 *
+		 * @public
+		 * @param {Date} oDate the date of the property.
+		 * @returns {string} sValue the formatted date
+		 */
+		date: function(oDate) {
+			return new DateFormatter({ now: Date.now }).format(oDate);
+		}
 	};
 
 });
